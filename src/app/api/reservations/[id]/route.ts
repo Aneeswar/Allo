@@ -23,10 +23,10 @@ export async function GET(
     }
 
     return NextResponse.json(reservation);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching reservation:', error);
     return NextResponse.json(
-      { error: 'Internal Server Error', details: error.message },
+      { error: 'Internal Server Error', details: (error as Error).message },
       { status: 500 }
     );
   }

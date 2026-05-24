@@ -63,11 +63,12 @@ export async function POST(
     });
 
     return NextResponse.json(reservation, { status: 200 });
-  } catch (error: any) {
-    if (error.message === 'NOT_FOUND') {
+  } catch (error) {
+    const err = error as Error;
+    if (err.message === 'NOT_FOUND') {
       return NextResponse.json({ error: 'Not Found: Reservation not found' }, { status: 404 });
     }
-    if (error.message === 'ALREADY_CONFIRMED') {
+    if (err.message === 'ALREADY_CONFIRMED') {
       return NextResponse.json(
         { error: 'Bad Request: Cannot release a reservation that has already been confirmed' },
         { status: 400 }
@@ -76,7 +77,7 @@ export async function POST(
 
     console.error('Error releasing reservation:', error);
     return NextResponse.json(
-      { error: 'Internal Server Error', details: error.message },
+      { error: 'Internal Server Error', details: err.message },
       { status: 500 }
     );
   }

@@ -74,8 +74,9 @@ export async function POST(req: NextRequest) {
       });
 
       return NextResponse.json(reservation, { status: 201 });
-    } catch (error: any) {
-      if (error.message === 'INSUFFICIENT_STOCK') {
+    } catch (error) {
+      const err = error as Error;
+      if (err.message === 'INSUFFICIENT_STOCK') {
         return NextResponse.json(
           { error: 'Conflict: Not enough stock available in this warehouse' },
           { status: 409 }
@@ -84,7 +85,7 @@ export async function POST(req: NextRequest) {
 
       console.error('Error reserving stock:', error);
       return NextResponse.json(
-        { error: 'Internal Server Error', details: error.message },
+        { error: 'Internal Server Error', details: err.message },
         { status: 500 }
       );
     }

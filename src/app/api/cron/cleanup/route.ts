@@ -30,10 +30,10 @@ async function handleCleanup(req: NextRequest) {
       message: 'Successfully processed expired reservations holds.',
       reclaimedCount: count,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error running cron cleanup:', error);
     return NextResponse.json(
-      { error: 'Internal Server Error', details: error.message },
+      { error: 'Internal Server Error', details: (error as Error).message },
       { status: 500 }
     );
   }

@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
@@ -95,7 +96,8 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
             setTimeLeft(remainingSecs);
           }
         }
-      } catch (err: any) {
+      } catch (error) {
+        const err = error as Error;
         console.error(err);
         setError(err.message || 'An error occurred.');
       } finally {
@@ -168,7 +170,8 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
 
       // Successful payment confirmation!
       setOrderState('success');
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as Error;
       console.error(err);
       setError(err.message || 'Failed to confirm reservation.');
     } finally {
@@ -195,7 +198,8 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
 
       // Successfully cancelled
       setOrderState('cancelled');
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as Error;
       console.error(err);
       setError(err.message || 'Failed to release reservation.');
     } finally {

@@ -65,7 +65,7 @@ async function runConcurrencyTest() {
   const attemptReservation = async (index: number) => {
     return prisma.$transaction(async (tx) => {
       // Run the atomic update query
-      const updatedStocks: any[] = await tx.$queryRaw`
+      const updatedStocks = await tx.$queryRaw<unknown[]>`
         UPDATE "Stock"
         SET "reserved" = "reserved" + 1
         WHERE "productId" = ${product.id}

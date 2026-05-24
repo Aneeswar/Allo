@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -80,7 +81,8 @@ export default function ProductsPage() {
       setSelectedWarehouses(defaultWarehouses);
       setQuantities(defaultQuantities);
       setError(null);
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as Error;
       console.error(err);
       setError(err.message || 'An error occurred while loading products.');
     } finally {
@@ -89,7 +91,11 @@ export default function ProductsPage() {
   };
 
   useEffect(() => {
-    fetchProducts();
+    const timer = setTimeout(() => {
+      fetchProducts().catch(() => {});
+    }, 0);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleWarehouseChange = (productId: string, warehouseId: string) => {
@@ -162,7 +168,8 @@ export default function ProductsPage() {
         router.push(`/checkout/${reservation.id}`);
       }, 1200);
 
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as Error;
       console.error(err);
       setAlertMessage({
         type: 'error',

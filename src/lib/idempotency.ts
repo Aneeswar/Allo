@@ -25,7 +25,7 @@ export async function withIdempotency(
         status: 'STARTED',
       },
     });
-  } catch (err: any) {
+  } catch {
     // Record already exists
     const record = await prisma.idempotency.findUnique({
       where: { key },
@@ -78,7 +78,7 @@ export async function withIdempotency(
     }
 
     return response;
-  } catch (err: any) {
+  } catch {
     // On unexpected error, clean up the idempotency record so they can retry
     await prisma.idempotency.delete({
       where: { key },
