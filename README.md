@@ -125,7 +125,7 @@ WHERE s."productId" = sub."productId" AND s."warehouseId" = sub."warehouseId";
 This CTE executes in a single SQL statement, updating all expired reservation rows to `RELEASED` and decrementing the total reclaimed stock on the `Stock` table in one transaction.
 
 ### 2. Scheduled Cron Job (Production Background Worker)
-We ship a `vercel.json` file configuring Vercel Cron. In production, Vercel calls the `/api/cron/cleanup` endpoint every minute to proactively purge abandoned holds. This route is secured by verifying the `CRON_SECRET` bearer token injected by Vercel.
+We ship a `vercel.json` file configuring Vercel Cron. In production, Vercel calls the `/api/cron/cleanup` endpoint once per day (compliant with Vercel Hobby tier limits) to proactively purge abandoned holds. This route is secured by verifying the `CRON_SECRET` bearer token injected by Vercel.
 
 ---
 
